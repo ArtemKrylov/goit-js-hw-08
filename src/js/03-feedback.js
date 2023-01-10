@@ -1,6 +1,6 @@
 import throttle from 'lodash.throttle';
-import isEmail from 'validator/lib/isemail';
-import isEmpty from 'validator/lib/isEmpty';
+// import isEmail from 'validator/lib/isemail';
+// import isEmpty from 'validator/lib/isEmpty';
 
 const feedbackFormEl = document.querySelector('.feedback-form');
 let feedBackFormState = {};
@@ -42,10 +42,10 @@ function onFeedbackFormElInput({ target: { name, value } }) {
 function onFeedbackFormSubmit(event) {
   event.preventDefault();
   //if the form is empty - prevent submitting
-  if (!validateForm()) {
-    console.log('Fill the form correctly!');
-    return;
-  }
+  // if (!validateForm()) {
+  //   console.log('Fill the form correctly!');
+  //   return;
+  // }
   console.log('Form data:');
   console.table(feedBackFormState);
   feedBackFormState = {};
@@ -53,24 +53,24 @@ function onFeedbackFormSubmit(event) {
   resetForm();
 }
 
-function validateForm() {
-  let isValid = true;
-  if (!isEmail(String(feedbackFormEl.elements.email.value))) {
-    showInvalidInput(feedbackFormEl.elements.email);
-    console.log('Invalid email');
-    isValid = false;
-  } else {
-    feedbackFormEl.elements.email.style.outline = 'none';
-  }
-  if (isEmpty(String(feedbackFormEl.elements.message.value))) {
-    showInvalidInput(feedbackFormEl.elements.message);
-    console.log('Invalid message. Message field must not be empty');
-    isValid = false;
-  } else {
-    feedbackFormEl.elements.message.style.outline = 'none';
-  }
-  return isValid;
-}
+// function validateForm() {
+//   let isValid = true;
+//   if (!isEmail(String(feedbackFormEl.elements.email.value))) {
+//     showInvalidInput(feedbackFormEl.elements.email);
+//     console.log('Invalid email');
+//     isValid = false;
+//   } else {
+//     feedbackFormEl.elements.email.style.outline = 'none';
+//   }
+//   if (isEmpty(String(feedbackFormEl.elements.message.value))) {
+//     showInvalidInput(feedbackFormEl.elements.message);
+//     console.log('Invalid message. Message field must not be empty');
+//     isValid = false;
+//   } else {
+//     feedbackFormEl.elements.message.style.outline = 'none';
+//   }
+//   return isValid;
+// }
 
 function showInvalidInput(invalidElement) {
   invalidElement.style.outline = '1px solid red';
