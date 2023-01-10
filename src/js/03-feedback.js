@@ -1,6 +1,8 @@
 import throttle from 'lodash.throttle';
 // import isEmail from 'validator/lib/isemail';
 // import isEmpty from 'validator/lib/isEmpty';
+const regExCheckEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g;
+const regExEmptyString = /^\s*$/g;
 
 const feedbackFormEl = document.querySelector('.feedback-form');
 let feedBackFormState = {};
@@ -42,10 +44,10 @@ function onFeedbackFormElInput({ target: { name, value } }) {
 function onFeedbackFormSubmit(event) {
   event.preventDefault();
   //if the form is empty - prevent submitting
-  // if (!validateForm()) {
-  //   console.log('Fill the form correctly!');
-  //   return;
-  // }
+  if (!validateForm()) {
+    console.log('Fill the form correctly!');
+    return;
+  }
   console.log('Form data:');
   console.table(feedBackFormState);
   feedBackFormState = {};
@@ -53,29 +55,34 @@ function onFeedbackFormSubmit(event) {
   resetForm();
 }
 
-// function validateForm() {
-//   let isValid = true;
-//   if (!isEmail(String(feedbackFormEl.elements.email.value))) {
-//     showInvalidInput(feedbackFormEl.elements.email);
-//     console.log('Invalid email');
-//     isValid = false;
-//   } else {
-//     feedbackFormEl.elements.email.style.outline = 'none';
-//   }
-//   if (isEmpty(String(feedbackFormEl.elements.message.value))) {
-//     showInvalidInput(feedbackFormEl.elements.message);
-//     console.log('Invalid message. Message field must not be empty');
-//     isValid = false;
-//   } else {
-//     feedbackFormEl.elements.message.style.outline = 'none';
-//   }
-//   return isValid;
-// }
+//check if the form is filled correctly
+//function returns true is email is written correctly and message is not empty
+//if invalid - returns false and shows invalid input with red outline
+function validateForm() {
+  let isValid = true;
+  if (regExCheckEmail.test(String(feedbackFormEl.elements.email.value))) {
+    showInvalidInput(feedbackFormEl.elements.email);
+    console.log('Invalid email');
+    isValid = false;
+  } else {
+    feedbackFormEl.elements.email.style.outline = 'none';
+  }
+  if (regExEmptyString.test(String(feedbackFormEl.elements.message.value))) {
+    showInvalidInput(feedbackFormEl.elements.message);
+    console.log('Invalid message. Message field must not be empty');
+    isValid = false;
+  } else {
+    feedbackFormEl.elements.message.style.outline = 'none';
+  }
+  return isValid;
+}
 
+//adds red outline
 function showInvalidInput(invalidElement) {
   invalidElement.style.outline = '1px solid red';
 }
 
+//function to reset form fields and remove outlines (if incorrect inputs)
 function resetForm() {
   feedbackFormEl.elements.email.style.outline = 'none';
   feedbackFormEl.elements.message.style.outline = 'none';
